@@ -29,10 +29,6 @@ print "Delete users"
 User.destroy_all
 puts " [x]"
 
-print "Delete schedules"
-Schedule.destroy_all
-puts " [x]"
-
 puts "@@@@@@@@@@@@@@@@@@"
 puts "@@@ Create all @@@"
 puts "@@@@@@@@@@@@@@@@@@"
@@ -73,10 +69,6 @@ Appointment.create( user: User.first,
                     start_date: '2018-03-15 15:30:00 +0100',
                     end_date: '2018-03-15 16:30:00 +0100')
 Schedule.create(appointment: Appointment.last)
-puts " [x]"
-
-print "Create Schedule"
-Schedule.create(start_time: '13:00', end_time: '20:00')
 puts " [x]"
 
 print "End of the seed processing"

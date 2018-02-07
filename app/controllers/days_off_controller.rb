@@ -1,0 +1,2 @@
+class DaysOffController < ApplicationController
+end

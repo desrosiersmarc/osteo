@@ -9,8 +9,8 @@ puts "******************"
 puts "*** Delete all ***"
 puts "******************"
 
-print "Delete days off"
-DaysOff.destroy_all
+print "Delete status history"
+StatusHistory.destroy_all
 puts " [x]"
 
 print "Delete Appointments"
@@ -21,8 +21,8 @@ print "Delete Appointment type"
 AppointmentType.destroy_all
 puts " [x]"
 
-print "Delete reviews"
-Review.destroy_all
+print "Delete status type"
+StatusType.destroy_all
 puts " [x]"
 
 print "Delete users"
@@ -33,42 +33,62 @@ puts "@@@@@@@@@@@@@@@@@@"
 puts "@@@ Create all @@@"
 puts "@@@@@@@@@@@@@@@@@@"
 
-print "Create days off"
-DaysOff.create(day_of_week: 6)
-DaysOff.create(day_of_week: 7)
-DaysOff.create(start_date: "01/02/2018", end_date: "15/02/2018")
+print "Create status types"
+StatusType.create(id: 1, name: 'En attente')
+StatusType.create(id: 2, name: 'accepté')
+StatusType.create(id: 3, name: 'refusé')
+StatusType.create(id: 4, name: 'annulé')
 puts " [x]"
 
-
-print "Create Appointment type"
-AppointmentType.create(name: 'Première consultation', duration: '1:00', price: 55)
-AppointmentType.create(name: 'Consultation de suivi', duration: '0:45', price: 55)
-AppointmentType.create(name: 'Consultation pédiatrique', duration: '1:00', price: 55)
+print "Create appointment types"
+AppointmentType.create(name: 'closed', bookable: false)
+AppointmentType.create(name: '1ére consultation', duration: '01:00:00', price: '60.00', bookable: true)
+AppointmentType.create(name: '2nde consultation', duration: '00:45:00', price: '60.00', bookable: true)
+AppointmentType.create(name: 'Pédiatrique', duration: '01:00:00', price: '60.00', bookable: true)
 puts " [x]"
-
 
 print "Create users"
-User.create(email: "mdesrosiers@orange.fr", password: "123soleil")
-User.create(email: "md@md.fr", password: "123soleil")
+User.create(email:'mdesrosiers@orange.fr', password: '123soleil')
+User.create(email:'mdesrosiers@world.com', password: '123soleil')
+User.create(email:'mdesrosiers@univers.com', password: '123soleil')
 puts " [x]"
 
-print "Create reviews"
-Review.create(content: "Top moumoute", rating: 5, user_id: User.first.id)
-Review.create(content: "Génial", rating: 4.5, user_id: User.last.id)
+print "Create appointments "
+10.times do
+  Appointment.create( user: User.all.sample,
+                      appointment_type: AppointmentType.all.sample,
+                      start_date: "22/08/2018 11:00:00",
+                      end_date: "22/08/2018 12:00:00",
+                      review: "Top moumoutte",
+                      rate: 4)
+end
 puts " [x]"
 
-
-print "Create appointments"
-Appointment.create( user: User.first,
-                    appointment_type: AppointmentType.first,
-                    start_date: '2018-03-20 10:30:00 +0100',
-                    end_date: '2018-03-20 11:30:00 +0100')
-Schedule.create(appointment: Appointment.last)
-Appointment.create( user: User.first,
-                    appointment_type: AppointmentType.first,
-                    start_date: '2018-03-15 15:30:00 +0100',
-                    end_date: '2018-03-15 16:30:00 +0100')
-Schedule.create(appointment: Appointment.last)
+print "Create status histories"
+StatusHistory.create(
+    date: (Time.now-3.day),
+    status_type_id: 1,
+    appointment: Appointment.first)
+StatusHistory.create(
+    date: (Time.now-2.day),
+    status_type_id: 2,
+    appointment: Appointment.first)
+StatusHistory.create(
+    date: (Time.now-1.day),
+    status_type_id: 3,
+    appointment: Appointment.first)
+StatusHistory.create(
+    date: (Time.now.day),
+    status_type_id: 4,
+    appointment: Appointment.first)
+StatusHistory.create(
+    date: (Time.now.day),
+    status_type_id: 2,
+    appointment: Appointment.second)
+StatusHistory.create(
+    date: (Time.now.day),
+    status_type_id: 2,
+    appointment: Appointment.third)
 puts " [x]"
 
 print "End of the seed processing"

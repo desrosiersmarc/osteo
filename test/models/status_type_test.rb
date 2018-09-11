@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DaysOffTest < ActiveSupport::TestCase
+class StatusTypeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

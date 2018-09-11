@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180201054750) do
+ActiveRecord::Schema.define(version: 20180216085107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,48 +21,36 @@ ActiveRecord::Schema.define(version: 20180201054750) do
     t.float "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "bookable"
   end
 
   create_table "appointments", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "appointment_type_id"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.date "canceled_at"
-    t.date "accepted_at"
-    t.date "refused_at"
+    t.string "review"
+    t.integer "rate"
+    t.bigint "user_id"
+    t.bigint "appointment_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["appointment_type_id"], name: "index_appointments_on_appointment_type_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
-  create_table "days_offs", force: :cascade do |t|
-    t.integer "day_of_week"
-    t.date "start_date"
-    t.date "end_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "reviews", force: :cascade do |t|
-    t.string "content"
-    t.integer "rating"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_reviews_on_user_id"
-  end
-
-  create_table "schedules", force: :cascade do |t|
-    t.date "start_time"
-    t.date "end_time"
+  create_table "status_histories", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "status_type_id"
     t.bigint "appointment_id"
-    t.bigint "days_off_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["appointment_id"], name: "index_schedules_on_appointment_id"
-    t.index ["days_off_id"], name: "index_schedules_on_days_off_id"
+    t.index ["appointment_id"], name: "index_status_histories_on_appointment_id"
+    t.index ["status_type_id"], name: "index_status_histories_on_status_type_id"
+  end
+
+  create_table "status_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -84,7 +72,6 @@ ActiveRecord::Schema.define(version: 20180201054750) do
 
   add_foreign_key "appointments", "appointment_types"
   add_foreign_key "appointments", "users"
-  add_foreign_key "reviews", "users"
-  add_foreign_key "schedules", "appointments"
-  add_foreign_key "schedules", "days_offs"
+  add_foreign_key "status_histories", "appointments"
+  add_foreign_key "status_histories", "status_types"
 end

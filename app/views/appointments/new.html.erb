@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <h3>Create a new appointment</h3>
+    <%= simple_form_for(@appointment) do |f| %>
+      <%= f.error_notification %>
+      <% if @appointment.errors.any? %>
+        <%= @appointment.errors.full_messages.join(" ") %>
+      <% end %>
+      <%= f.input :appointment_type_id, collection: @appointment_types %>
+
+      <p>Available days</p>
+      <p>Available hours</p>
+      <%= f.input :start_date, label: 'Start time', as: :date %>
+
+      <%= f.input :comment, label: 'Leave a message to your Doctor' %>
+
+      <%= f.submit 'Créer le rdv', class: 'btn btn-danger btn-block' %>
+    <% end %>
+  </div>
+</div>
